@@ -1,2 +1,2 @@
 #Procfile
-web: gunicorn djangoherokuapp.wsgi --log-file -
+web: gunicorn courseapp.wsgi --log-file -
