@@ -1,0 +1,50 @@
+{% extends 'course/base.html' %}
+
+
+{% block content %}
+<div class="container mt-8">
+    <div class="section-profile">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-7">
+                <div class="card p-3 py-4">
+                    <div class="text-center"> <img src="https://i.imgur.com/bDLhJiP.jpg" width="100"
+                            class="rounded-circle">
+                    </div>
+                    <div class="text-center mt-3">
+                        <h5 class="mt-2 mb-0">{{request.user}}</h5> <span>{{request.user.phone}}</span>
+                        {% if user_subscription != None %}
+                        <div class="d-flex justify-content-evenly align-items-center mt-4 px-4">
+                            <div class="stats">
+                                <h6 class="mb-0">Membership</h6> <span>{{ user_membership.membership.membership_type
+                                    }}</span>
+                            </div>
+                            {% if user_subscription.active != False %}
+
+                            <div class="stats">
+                                <h6 class="mb-0">Expiry</h6> <span>{{ user_subscription.get_next_billing_date }}</span>
+                            </div>
+                            <div class="stats">
+                                <a href="{% url 'memberships:cancel' %}" class="btn btn-outline-warning px-4">Cancel
+                                    Membership</a>
+                            </div>
+
+
+
+                            {% endif %}
+                        </div>
+                        {% else %}
+                        <p>You have a free membership plan. To Change the plan,
+
+                        </p>
+                        <p><a class="btn btn-warning" href="{% url 'memberships:select' %}">Upgrade</a>
+                        </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}
