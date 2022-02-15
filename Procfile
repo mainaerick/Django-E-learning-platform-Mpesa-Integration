@@ -1,2 +1,2 @@
 #Procfile
-web: gunicorn courseapp.wsgi --log-file -
+web: gunicorn courseapp.wsgi:application --log-file -
