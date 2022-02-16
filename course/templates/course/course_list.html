@@ -17,7 +17,7 @@
                 <a href="{{ object.get_absolute_url }}"">
             <div class=" row g-0">
                     <div class="col-md-4">
-                        <img src="{{ object.thumbnail.url}}" class="img-fluid rounded-start" alt="...">
+                        <img src="{% static object.thumbnail.url %}" class="img-fluid rounded-start" alt="...">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
