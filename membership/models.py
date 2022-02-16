@@ -5,7 +5,8 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
-
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 # Create your models here.
 MEMBERSHIP_CHOICES = (('Enterprise', 'ent'), ('Professional', 'pro'), ('Free',
                                                                        'free'))
@@ -16,8 +17,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, null=True)
     phone_regex = RegexValidator(
         regex=r"^(254)([7][0-9]|[1][0-1]){1}[0-9]{1}[0-9]{6}$",
-        message=
-        "Phone number must be entered in the format: '254712345678. Up to 12 digits allowed."
+        message="Phone number must be entered in the format: '254712345678. Up to 12 digits allowed."
     )
     phone = models.CharField(validators=[phone_regex],
                              unique=True,
@@ -141,3 +141,23 @@ class MpesaPayment(BaseModel):
 
     def __str__(self):
         return self.first_name
+
+
+class PaymentTransaction(models.Model):
+    phone_number = models.CharField(max_length=30)
+    amount = models.DecimalField(max_digits=14, decimal_places=2, default=0)
+    is_finished = models.BooleanField(default=False)
+    is_successful = models.BooleanField(default=False)
+    trans_id = models.CharField(max_length=30)
+    order_id = models.CharField(max_length=200)
+    checkout_request_id = models.CharField(max_length=100)
+    date_modified = models.DateTimeField(auto_now=True)
+    date_created = models.DateTimeField(auto_now=False, auto_now_add=True)
+
+    content_type = models.ForeignKey(
+        ContentType, null=True, blank=True, on_delete=models.SET_NULL)
+    object_id = models.PositiveIntegerField(default=0)
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+    def __str__(self):
+        return "{} {}".format(self.phone_number, self.amount)
