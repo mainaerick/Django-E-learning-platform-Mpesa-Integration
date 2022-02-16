@@ -15,8 +15,6 @@
         </ul>
 
         {% if object is not None %}
-
-
         <video class="lesson_video" controls poster="{% static object.thumbnail.url %}"
             src="{% static object.videofile.url %}" type='video/mp4' controlsList="nodownload">
             Sorry, your browser doesn't support embedded videos.

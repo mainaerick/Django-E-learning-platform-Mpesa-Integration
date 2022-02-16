@@ -111,6 +111,7 @@ def profile_view(request):
 
 
 class MembershipSelectView(LoginRequiredMixin, ListView):
+    login_url = '/membership/login/'
     model = Membership
 
     def get_context_data(self, *args, **kwargs):
