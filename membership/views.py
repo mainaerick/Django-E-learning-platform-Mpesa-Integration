@@ -158,7 +158,7 @@ def PaymentView(request):
             print("hello")
         else:
             phonenumber = request.user.phone
-        callback_url = f"https://5d47-102-166-208-156.ngrok.io/membership/c2b/confirmation"
+        callback_url = f"https://ecourseapp.herokuapp.com/membership/c2b/confirmation"
         stk_response = payments.stk_push(1, phonenumber, callback_url)
         print(stk_response)
         if stk_response.status_code < 299:
