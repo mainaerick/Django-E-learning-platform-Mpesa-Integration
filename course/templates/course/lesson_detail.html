@@ -1,5 +1,5 @@
 {% extends 'course/base.html' %}
-
+{% load static %}
 {% block post_detail_link %}
 {% if object is not None %}
 
@@ -17,8 +17,8 @@
         {% if object is not None %}
 
 
-        <video class="lesson_video" controls poster="{{ object.thumbnail.url }}" src="{{ object.videofile.url }}"
-            type='video/mp4' controlsList="nodownload">
+        <video class="lesson_video" controls poster="{% static object.thumbnail.url %}"
+            src="{% static object.videofile.url %}" type='video/mp4' controlsList="nodownload">
             Sorry, your browser doesn't support embedded videos.
         </video>
 
