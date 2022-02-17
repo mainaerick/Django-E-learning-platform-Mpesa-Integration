@@ -205,7 +205,7 @@ def updateTransactionRecords(request, subscription_id):
 
     sub, created = Subscription.objects.get_or_create(
         user_membership=user_membership)
-    sub.stripe_subscription_id = subscription_id
+    sub.mpesa_subscription_id = subscription_id
     sub.active = True
     sub.save()
 
@@ -281,6 +281,10 @@ def confirmation(request):
             transaction.is_finished = True
             transaction.is_successful = True
             transaction.save()
+            return redirect(reverse('memberships:update-transactions',
+                                    kwargs={
+                                        'subscription_id': receipt_number
+                                    }))
 
     else:
         print('unsuccessfull')
