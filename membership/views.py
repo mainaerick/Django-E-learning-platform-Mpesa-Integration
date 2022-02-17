@@ -283,10 +283,10 @@ def confirmation(request):
             transaction.is_successful = True
             transaction.save()
             print(" haha")
-            return redirect(reverse('memberships:update-transactions',
-                                    kwargs={
-                                        'subscription_id': receipt_number
-                                    }))
+        return redirect(reverse('memberships:update-transactions',
+                                kwargs={
+                                    'subscription_id': receipt_number
+                                }))
 
     else:
         print('unsuccessfull')
