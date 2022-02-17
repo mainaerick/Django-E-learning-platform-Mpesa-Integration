@@ -30,6 +30,21 @@
                     <button style="background-color:burlywood" class="btn btn-primary mb-3"> <span class="ps-3">Pay
                             ${{selected_membership.price}}</span> <span class="fas fa-arrow-right"></span> </button>
                 </form>
+                {% if transaction_id is not None %}
+                <div class="col-12">
+                    <div class="d-flex flex-column">
+
+
+
+                        <p class="text mb-1">After Payment click 'verify payment' to verify payment</p>
+                        <button style="background-color:burlywood" class="btn btn-primary mb-3"> <a
+                                href="{% url 'memberships:check-transactions' transaction_id %}" class="ps-3">Verify
+                                Payment
+                            </a> <span class="fas fa-arrow-right"></span> </button>
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>

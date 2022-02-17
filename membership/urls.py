@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import (MembershipSelectView, PaymentView, call_back,
+from .views import (CheckTransaction, MembershipSelectView, PaymentView, call_back,
                     cancelSubscription, confirmation, loginPage, logoutUser,
                     profile_view, register_urls, registerPage,
                     updateTransactionRecords, validation)
@@ -13,6 +13,9 @@ urlpatterns = [
     path('update-transactions/<subscription_id>/',
          updateTransactionRecords,
          name='update-transactions'),
+    path('check-transactions/<trans_id>/',
+         CheckTransaction,
+         name='check-transactions'),
     path('logout/', logoutUser, name='logout'),
     path('login/', loginPage, name='login'),
     path('signup/', registerPage, name='signup'),

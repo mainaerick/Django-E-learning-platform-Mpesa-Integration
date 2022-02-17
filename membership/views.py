@@ -146,6 +146,7 @@ class MembershipSelectView(LoginRequiredMixin, ListView):
 @login_required
 def PaymentView(request):
     user_membership = get_user_membership(request)
+    transaction_id = None
     try:
         selected_membership = get_selected_membership(request)
     except:
@@ -165,7 +166,6 @@ def PaymentView(request):
         #     messages.success(request,
         #                      "request has being made to " + phonenumber)
 
-        transaction_id = None
         # json_response = json.loads(stk_response)
         if "ResponseCode" in stk_response:
             if stk_response["ResponseCode"] == "0":
@@ -185,12 +185,13 @@ def PaymentView(request):
 
                     transaction.save()
                     print(transaction)
+                    transaction_id = transaction.id
                     # return transaction.id
         # else:
         #     raise Exception("Error sending MPesa stk push", stk_response)
 
     context = {
-        'publishKey': publishKey,
+        'transaction_id': transaction_id,
         'selected_membership': selected_membership
     }
     return render(request, "membership/membership_payment.html", context)
@@ -260,7 +261,6 @@ def validation(request):
 
 @csrf_exempt
 def confirmation(request):
-    return HttpResponseRedirect(request.path_info)
     mpesa_body = request.body.decode('utf-8')
     request_data = json.loads(mpesa_body)
     print(request_data)
@@ -311,6 +311,35 @@ def confirmation(request):
     context = {"ResultCode": 0, "ResultDesc": "Accepted"}
 
     return JsonResponse(dict(context))
+
+
+@csrf_exempt
+def CheckTransaction(request, trans_id):
+    try:
+        transaction = PaymentTransaction.objects.filter(id=trans_id).get()
+        if transaction:
+            if transaction.is_successful:
+                return redirect(reverse('memberships:update-transactions',
+                                        kwargs={
+                                            'subscription_id': trans_id
+                                        }))
+            else:
+                messages.info(request,
+                              "Transaction could not be verified!")
+                return redirect(reverse('memberships:payment'))
+        else:
+            # TODO : Edit order if no transaction is found
+            return JsonResponse({
+                "message": "Error. Transaction not found",
+                "status": False
+            },
+                status=400)
+    except PaymentTransaction.DoesNotExist:
+        return JsonResponse({
+            "message": "Server Error. Transaction not found",
+            "status": False
+        },
+            status=400)
 
 
 @csrf_exempt
