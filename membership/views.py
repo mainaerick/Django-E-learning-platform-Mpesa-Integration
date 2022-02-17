@@ -268,7 +268,6 @@ def confirmation(request):
     resultcode = body.get('stkCallback').get('ResultCode')
     # Perform your processing here e.g. print it out...
     if resultcode == 0:
-        return redirect(reverse('memberships:select'))
         print('Payment successful')
         requestId = body.get('stkCallback').get('CheckoutRequestID')
         metadata = body.get('stkCallback').get(
@@ -284,10 +283,7 @@ def confirmation(request):
             transaction.is_successful = True
             transaction.save()
             print(" haha")
-        return redirect(reverse('memberships:update-transactions',
-                                kwargs={
-                                    'subscription_id': receipt_number
-                                }))
+            updateTransactionRecords(request, receipt_number)
 
     else:
         print('unsuccessfull')
