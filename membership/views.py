@@ -268,6 +268,7 @@ def confirmation(request):
     resultcode = body.get('stkCallback').get('ResultCode')
     # Perform your processing here e.g. print it out...
     if resultcode == 0:
+        return redirect(reverse('memberships:select'))
         print('Payment successful')
         requestId = body.get('stkCallback').get('CheckoutRequestID')
         metadata = body.get('stkCallback').get(
