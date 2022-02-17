@@ -32,6 +32,7 @@ class LessonDetailView(LoginRequiredMixin, View):
         course_allowed_mem_types = course.allowed_memberships.all()
         context = {'object': None}
         if course_allowed_mem_types.filter(
-                membership_type=user_membership_type).exists():
+                membership_type=user_membership_type).exists() or course_allowed_mem_types.filter(
+                membership_type="free").exists():
             context = {'object': lesson}
         return render(request, "course/lesson_detail.html", context)
