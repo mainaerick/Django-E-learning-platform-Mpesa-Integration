@@ -37,10 +37,11 @@
 
 
                         <p class="text mb-1">After Payment click 'verify payment' to verify payment</p>
-                        <button style="background-color:burlywood" class="btn btn-primary mb-3"> <a
-                                href="{% url 'memberships:check-transactions' transaction_id %}" class="ps-3">Verify
+                        <a href="{% url 'memberships:check-transactions' transaction_id selected_membership %}"><button
+                                style="background-color:burlywood" class="btn btn-primary mb-3">
+                                Verify
                                 Payment
-                            </a> <span class="fas fa-arrow-right"></span> </button>
+                                <span class="fas fa-arrow-right"></span> </button></a>
                         </p>
                     </div>
                 </div>

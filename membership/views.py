@@ -314,7 +314,7 @@ def confirmation(request):
 
 
 @csrf_exempt
-def CheckTransaction(request, trans_id):
+def CheckTransaction(request, trans_id, sel_memb):
     try:
         transaction = PaymentTransaction.objects.filter(id=trans_id).get()
         if transaction:
@@ -326,7 +326,11 @@ def CheckTransaction(request, trans_id):
             else:
                 messages.info(request,
                               "Transaction could not be verified!")
-                return redirect(reverse('memberships:payment'))
+                context = {
+                    'transaction_id': trans_id,
+                    'selected_membership': sel_memb
+                }
+                return render(request, "membership/membership_payment.html", context)
         else:
             # TODO : Edit order if no transaction is found
             return JsonResponse({

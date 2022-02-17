@@ -13,7 +13,7 @@ urlpatterns = [
     path('update-transactions/<subscription_id>/',
          updateTransactionRecords,
          name='update-transactions'),
-    path('check-transactions/<trans_id>/',
+    path('check-transactions/<trans_id>/<sel_memb>',
          CheckTransaction,
          name='check-transactions'),
     path('logout/', logoutUser, name='logout'),
