@@ -59,4 +59,5 @@ def stk_push(amount, phonenumber, callbackurl):
     response = requests.post(api_url, json=req, headers=headers)
 
     # logging.info("response", response)
-    return response
+    json_response = json.loads(response.text)
+    return json_response

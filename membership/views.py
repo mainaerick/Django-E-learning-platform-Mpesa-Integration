@@ -12,7 +12,7 @@ from django.urls import reverse
 
 from .forms import MyUserCreationForm
 
-from .models import Membership, MpesaPayment, User, UserMembership, Subscription
+from .models import Membership, MpesaPayment, PaymentTransaction, User, UserMembership, Subscription
 from .utils import payments
 from requests.auth import HTTPBasicAuth
 import json
@@ -161,9 +161,34 @@ def PaymentView(request):
         callback_url = f"https://ecourseapp.herokuapp.com/membership/c2b/confirmation"
         stk_response = payments.stk_push(1, phonenumber, callback_url)
         print(stk_response)
-        if stk_response.status_code < 299:
-            messages.success(request,
-                             "request has being made to " + phonenumber)
+        # if stk_response.status_code < 299:
+        #     messages.success(request,
+        #                      "request has being made to " + phonenumber)
+
+        transaction_id = None
+        # json_response = json.loads(stk_response)
+        if "ResponseCode" in stk_response:
+            if stk_response["ResponseCode"] == "0":
+
+                checkout_id = stk_response["CheckoutRequestID"]
+                if transaction_id:
+
+                    transaction = PaymentTransaction.objects.filter(
+                        id=transaction_id)
+                    transaction.checkout_request_id = checkout_id
+                    transaction.save()
+                    return transaction.id
+                else:
+                    transaction = PaymentTransaction.objects.create(phone_number=phonenumber,
+                                                                    checkout_request_id=checkout_id,
+                                                                    amount=1.00, order_id=0)
+
+                    transaction.save()
+                    print(transaction)
+                    # return transaction.id
+        # else:
+        #     raise Exception("Error sending MPesa stk push", stk_response)
+
     context = {
         'publishKey': publishKey,
         'selected_membership': selected_membership
@@ -236,21 +261,47 @@ def validation(request):
 @csrf_exempt
 def confirmation(request):
     mpesa_body = request.body.decode('utf-8')
-    mpesa_payment = json.loads(mpesa_body)
-    print(mpesa_payment)
-    payment = MpesaPayment(
-        first_name=mpesa_payment['FirstName'],
-        last_name=mpesa_payment['LastName'],
-        middle_name=mpesa_payment['MiddleName'],
-        description=mpesa_payment['TransID'],
-        phone_number=mpesa_payment['MSISDN'],
-        amount=mpesa_payment['TransAmount'],
-        reference=mpesa_payment['BillRefNumber'],
-        organization_balance=mpesa_payment['OrgAccountBalance'],
-        type=mpesa_payment['TransactionType'],
-    )
-    payment.save()
+    request_data = json.loads(mpesa_body)
+    print(request_data)
+    body = request_data.get('Body')
+    resultcode = body.get('stkCallback').get('ResultCode')
+    # Perform your processing here e.g. print it out...
+    if resultcode == 0:
+        print('Payment successful')
+        requestId = body.get('stkCallback').get('CheckoutRequestID')
+        metadata = body.get('stkCallback').get(
+            'CallbackMetadata').get('Item')
+        for data in metadata:
+            if data.get('Name') == "MpesaReceiptNumber":
+                receipt_number = data.get('Value')
+        transaction = PaymentTransaction.objects.get(
+            checkout_request_id=requestId)
+        if transaction:
+            transaction.trans_id = receipt_number
+            transaction.is_finished = True
+            transaction.is_successful = True
+            transaction.save()
 
+    else:
+        print('unsuccessfull')
+        requestId = body.get('stkCallback').get('CheckoutRequestID')
+        transaction = PaymentTransaction.objects.get(
+            checkout_request_id=requestId)
+        if transaction:
+            transaction.is_finished = True
+            transaction.is_successful = False
+            transaction.save()
+
+        # Prepare the response, assuming no errors have occurred. Any response
+        # other than a 0 (zero) for the 'ResultCode' during Validation only means
+        # an error occurred and the transaction is cancelled
+    message = {
+        "ResultCode": 0,
+        "ResultDesc": "The service was accepted successfully",
+        "ThirdPartyTransID": "1237867865"
+    }
+
+    # Send the response back to the server
     context = {"ResultCode": 0, "ResultDesc": "Accepted"}
 
     return JsonResponse(dict(context))
