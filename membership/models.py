@@ -78,18 +78,6 @@ class Subscription(models.Model):
     def __str__(self):
         return self.user_membership.user.username
 
-    @property
-    def get_created_date(self):
-        subscription = stripe.Subscription.retrieve(
-            self.stripe_subscription_id)
-        return datetime.fromtimestamp(subscription.created)
-
-    @property
-    def get_next_billing_date(self):
-        subscription = stripe.Subscription.retrieve(
-            self.stripe_subscription_id)
-        return datetime.fromtimestamp(subscription.current_period_end)
-
 
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
