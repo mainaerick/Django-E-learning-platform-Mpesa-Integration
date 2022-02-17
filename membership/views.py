@@ -260,7 +260,7 @@ def validation(request):
 
 @csrf_exempt
 def confirmation(request):
-
+    return redirect(reverse('memberships:select'))
     mpesa_body = request.body.decode('utf-8')
     request_data = json.loads(mpesa_body)
     print(request_data)
@@ -283,7 +283,10 @@ def confirmation(request):
             transaction.is_successful = True
             transaction.save()
             print(" haha")
-            updateTransactionRecords(request, receipt_number)
+        return redirect(reverse('memberships:update-transactions',
+                                kwargs={
+                                    'subscription_id': receipt_number
+                                }))
 
     else:
         print('unsuccessfull')
