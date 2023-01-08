@@ -5,10 +5,14 @@
 
 {% block content %}
 <div class="container">
-    <div class="section-coursedetail">
-        <h5 class="top-content">Course Content</h5>
+    <div class="section-coursedetail"> 
+        <div class="d-flex align-items-center">
+            <a class="top-content"  href="{% url 'course:home' %}">Home</a>
+        <span>--</span><span class="top-content">Course Content</span>
+        </div>
+        
         <div class="row">
-            <div class="col-sm-4 col-md-4">
+            <div class="col-sm-8 col-md-8">
                 <h3>{{ object.title }}</h3>
                 <p>{{ object.description }}</p>
                 <div class="list-group">

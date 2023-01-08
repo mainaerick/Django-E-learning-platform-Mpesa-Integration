@@ -100,18 +100,37 @@ body {
   background-size: cover;
 }
 .page-btn {
-  background-color: var(--colorbtnlight);
-  color: var(--colortextdark);
+  padding: 13px;
+  background-color: var(--colorbackgrounddark);
+  color: var(--colortextlight);
+  border-radius: 99px 99px 99px 99px;
+  -webkit-border-radius: 99px 99px 99px 99px;
+  -moz-border-radius: 99px 99px 99px 99px;
+  border: 3px solid var(--colorbackgrounddark);
+  box-shadow: 0px 10px 14px 3px #276873;
+  text-shadow: 0px 1px 0px #3d768a;
 }
-
+.page-btn:hover {
+  opacity: 0.7;
+  -moz-transition: all 0.4s ease-out; /* FF4+ */
+  -o-transition: all 0.4s ease-out; /* Opera 10.5+ */
+  -webkit-transition: all 0.4s ease-out; /* Saf3.2+, Chrome */
+  -ms-transition: all 0.4s ease-out; /* IE10? */
+  transition: all 0.4s ease-out;
+}
 .section-courses {
   margin: auto;
-  padding: var(--sectionpadding);
+  padding: 0 0 0 120px;
   display: grid;
   grid-template-columns: 2fr 1fr;
 }
 .section-courses .card {
-  border: 0;
+  padding: 13px;
+  margin: 13px;
+  border-radius: 41px 41px 41px 41px;
+  -webkit-border-radius: 41px 41px 41px 41px;
+  -moz-border-radius: 41px 41px 41px 41px;
+  border: 3px outset #1b817c;
 }
 .section-courses .card:hover {
   -webkit-box-shadow: var(--webkit-box-shadow);
@@ -123,6 +142,7 @@ body {
   padding: 32px 0;
 }
 .courses-top .title {
+  color: #1b817c;
   font-weight: 700;
   font-weight: var(--titlefontweight);
 }
@@ -141,12 +161,9 @@ body {
 }
 
 .section-courses .right {
+  position: relative;
   background-color: aliceblue;
   padding: 32px;
-  border-radius: 19px 19px 19px 19px;
-  -moz-border-radius: 19px 19px 19px 19px;
-  -webkit-border-radius: 19px 19px 19px 19px;
-  border: 0px solid #000000;
 }
 .section-courses .right .upcoming-top .title {
   font-weight: 700;
@@ -217,15 +234,21 @@ course_category li a:active {
 }
 .section-membership .membership_plan {
   display: flex;
+  margin: 13px;
   justify-content: center;
+  border-radius: 18px 18px 18px 18px;
+-webkit-border-radius: 18px 18px 18px 18px;
+-moz-border-radius: 18px 18px 18px 18px;
+border: 1px solid #1b817c;
 }
 .section-membership .membership_plan .card .card-body {
   display: grid;
   grid-template-rows: 0.5fr 2fr 0.5fr;
 }
 .section-membership .membershipprice {
-  background-color: var(--colorbackgrounddark);
-  color: var(--colortextlight);
+  
+  color: var(--color-dark);
+  font-weight: 800;
 }
 .section-checkout {
   padding: var(--sectionpadding);
@@ -369,7 +392,8 @@ course_category li a:active {
   text-align: center;
 }
 .btn {
-  background-color: transparent;
+  background-color: var(--colorbackgrounddark);
+  color: var(--colorbackgroundlight);
   border: none;
   display: inline-flex;
   align-items: center;
@@ -380,8 +404,30 @@ course_category li a:active {
   border-radius: 5px;
   box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.15);
   font-weight: 500;
-}
 
+}
+.btn--onlight {
+  padding: 13px;
+  color: var(--colorbackgroundlight);
+  background-color: var(--colorbackgrounddark);
+  border-radius: 99px 99px 99px 99px;
+  -webkit-border-radius: 99px 99px 99px 99px;
+  -moz-border-radius: 99px 99px 99px 99px;
+  border: 3px solid var(--colorbackgrounddark);
+  box-shadow: 0px 10px 14px -7px #276873;
+  text-shadow: 0px 1px 0px #3d768a;
+}
+.card-title{
+  font-weight: 700;
+}
+.btn--onlight:hover{
+  opacity: .7; 
+    -moz-transition: all 0.4s ease-out;  /* FF4+ */
+    -o-transition: all 0.4s ease-out;  /* Opera 10.5+ */
+    -webkit-transition: all 0.4s ease-out;  /* Saf3.2+, Chrome */
+    -ms-transition: all 0.4s ease-out;  /* IE10? */
+    transition: all 0.4s ease-out;  
+}
 .btn--link {
   border-radius: 0;
   padding: 0;
@@ -400,6 +446,7 @@ course_category li a:active {
 
 .btn:hover {
   opacity: 0.9;
+  color: #fff;
 }
 
 .btn--dark {

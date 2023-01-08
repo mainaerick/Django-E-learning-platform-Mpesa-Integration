@@ -18,7 +18,7 @@ from requests.auth import HTTPBasicAuth
 import json
 import requests
 
-from .mpesa_credentials import LipanaMpesaPpassword
+from .mpesa_credentials import LipanaMpesaPpassword,MpesaC2bCredential
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 
@@ -159,7 +159,7 @@ def PaymentView(request):
             print("hello")
         else:
             phonenumber = request.user.phone
-        callback_url = f"https://ecourseapp.herokuapp.com/membership/c2b/confirmation"
+        callback_url = MpesaC2bCredential.callbackUrl
         stk_response = payments.stk_push(1, phonenumber, callback_url)
         print(stk_response)
         # if stk_response.status_code < 299:
@@ -196,6 +196,39 @@ def PaymentView(request):
     }
     return render(request, "membership/membership_payment.html", context)
 
+@csrf_exempt
+def CheckTransaction(request, trans_id, sel_memb):
+    try:
+        transaction = PaymentTransaction.objects.filter(id=trans_id).get()
+        if transaction:
+            if transaction.is_successful:
+                return redirect(reverse('memberships:update-transactions',
+                                        kwargs={
+                                            'subscription_id': trans_id
+                                        }))
+            else:
+                messages.info(request,
+                              "Transaction could not be verified!")
+                context = {
+                    'transaction_id': trans_id,
+                    'selected_membership': sel_memb
+                }
+                return render(request, "membership/membership_payment.html", context)
+        else:
+            # TODO : Edit order if no transaction is found
+            return JsonResponse({
+                "message": "Error. Transaction not found",
+                "status": False
+            },
+                status=400)
+    except PaymentTransaction.DoesNotExist:
+        return JsonResponse({
+            "message": "Server Error. Transaction not found",
+            "status": False
+        },
+            status=400)
+
+
 
 @login_required
 def updateTransactionRecords(request, subscription_id):
@@ -229,8 +262,8 @@ def cancelSubscription(request):
         messages.info(request, "You dont have an active membership")
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-    sub = stripe.Subscription.retrieve(user_sub.stripe_subscription_id)
-    sub.delete()
+    # sub = stripe.Subscription.retrieve(user_sub.stripe_subscription_id)
+    # sub.delete()
 
     user_sub.active = False
     user_sub.save()
@@ -312,38 +345,6 @@ def confirmation(request):
 
     return JsonResponse(dict(context))
 
-
-@csrf_exempt
-def CheckTransaction(request, trans_id, sel_memb):
-    try:
-        transaction = PaymentTransaction.objects.filter(id=trans_id).get()
-        if transaction:
-            if transaction.is_successful:
-                return redirect(reverse('memberships:update-transactions',
-                                        kwargs={
-                                            'subscription_id': trans_id
-                                        }))
-            else:
-                messages.info(request,
-                              "Transaction could not be verified!")
-                context = {
-                    'transaction_id': trans_id,
-                    'selected_membership': sel_memb
-                }
-                return render(request, "membership/membership_payment.html", context)
-        else:
-            # TODO : Edit order if no transaction is found
-            return JsonResponse({
-                "message": "Error. Transaction not found",
-                "status": False
-            },
-                status=400)
-    except PaymentTransaction.DoesNotExist:
-        return JsonResponse({
-            "message": "Server Error. Transaction not found",
-            "status": False
-        },
-            status=400)
 
 
 @csrf_exempt

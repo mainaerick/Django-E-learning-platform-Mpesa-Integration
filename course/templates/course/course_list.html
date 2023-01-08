@@ -4,7 +4,7 @@
 {% block content %}
 {% include 'course/more_info.html' %}
 
-<div class="container">
+<div class="">
     <div class="section-courses">
         <div class="left">
             <div class="courses-top">
@@ -14,9 +14,9 @@
 
             {% for object in object_list %}
             <div class="card mb-3" style="max-width: 840px;">
-                <a href="{{ object.get_absolute_url }}"">
-            <div class=" row g-0">
-                    <div class="col-md-4">
+                <a href="{{ object.get_absolute_url }}">
+            <div class="row g-0">
+                    <div class="col-md-4" style="height:48; width:48px;">
                         <img src="{% static object.thumbnail.url %}" class="img-fluid rounded-start" alt="...">
                     </div>
                     <div class="col-md-8">
@@ -56,9 +56,7 @@
             <div class="card-body">
                 <h5 style="font-weight: 700;" class="card-title">Strategy,Design, Development</h5>
                 <p class="card-text">{{x}}Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem aspernatur
-                    fugit
-                    fugiat quas voluptatum, necessitatibus doloremque vel asperiores praesentium ut sapiente iste
-                    placeat beatae suscipit dolores animi voluptas tempore aliquam.</p>
+                    fugit.</p>
             </div>
         </div>
 
@@ -66,29 +64,11 @@
             <div class="card-body">
                 <h5 style="font-weight: 700;" class="card-title">Strategy,Design, Development</h5>
                 <p class="card-text">{{x}}Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem aspernatur
-                    fugit
-                    fugiat quas voluptatum, necessitatibus doloremque vel asperiores praesentium ut sapiente iste
-                    placeat beatae suscipit dolores animi voluptas tempore aliquam.</p>
+                    fugit.
+                    </p>
             </div>
         </div>
-        <div class="card mb-4">
-            <div class="card-body">
-                <h5 style="font-weight: 700;" class="card-title">Strategy,Design, Development</h5>
-                <p class="card-text">{{x}}Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem aspernatur
-                    fugit
-                    fugiat quas voluptatum, necessitatibus doloremque vel asperiores praesentium ut sapiente iste
-                    placeat beatae suscipit dolores animi voluptas tempore aliquam.</p>
-            </div>
-        </div>
-        <div class="card mb-4">
-            <div class="card-body">
-                <h5 style="font-weight: 700;" class="card-title">Strategy,Design, Development</h5>
-                <p class="card-text">{{x}}Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorem aspernatur
-                    fugit
-                    fugiat quas voluptatum, necessitatibus doloremque vel asperiores praesentium ut sapiente iste
-                    placeat beatae suscipit dolores animi voluptas tempore aliquam.</p>
-            </div>
-        </div>
+       
     </div>
 
 
