@@ -12,18 +12,18 @@ services:
       - DB_HOST=db
       - DB_NAME=${DB_NAME}
       - DB_PASS=${DB_PASS}
-      - DB_USER =${DB_USER}
+      - DB_USER=${DB_USER}
       - SECRET_KEY=${SECRET_KEY}
-      - ALLOWED_HOSTS =${ALLOWED_HOSTS}
-      - consumer_key =${consumer_key} 
-      - consumer_secret =${consumer_secret} 
-      - mpesa_consumer_key_prod =${mpesa_consumer_key_prod} 
-      - mpesa_consumer_secret_prod =${mpesa_consumer_secret_prod} 
-      - api_URL =${api_URL}
-      - api_URL_token =${api_URL_token} 
-      - callbackUrl =${callbackUrl} 
-      - Business_short_code =${Business_short_code} 
-      - passkey =${passkey}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - consumer_key=${consumer_key} 
+      - consumer_secret=${consumer_secret} 
+      - mpesa_consumer_key_prod=${mpesa_consumer_key_prod} 
+      - mpesa_consumer_secret_prod=${mpesa_consumer_secret_prod} 
+      - api_URL=${api_URL}
+      - api_URL_token=${api_URL_token} 
+      - callbackUrl=${callbackUrl} 
+      - Business_short_code=${Business_short_code} 
+      - passkey=${passkey}
     depends_on:
       - db
   db:
